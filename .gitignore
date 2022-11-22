@@ -1,0 +1,6 @@
+geckodriver*
+
+__pycache__
+*.pyc
+
+migrations
