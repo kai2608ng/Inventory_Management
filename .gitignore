@@ -4,3 +4,5 @@ __pycache__
 *.pyc
 
 migrations
+
+node_modules

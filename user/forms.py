@@ -13,7 +13,7 @@ class LoginForm(forms.models.ModelForm):
                     "placeholder": "Username",
                     "id": "login-username",
                     "name": "username",
-                }
+                },
             )
         }
         error_messages = {

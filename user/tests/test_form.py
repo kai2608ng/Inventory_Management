@@ -15,3 +15,7 @@ class LoginFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['username'], [INVALID_USERNAME_ERROR])
     
+    def test_valid_input_able_to_save_in_login_form(self):
+        form = LoginForm(data = {'username': "sky2608ng"})
+        new_item = form.save()
+        print(new_item)

@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width = device-width">
         <title>Login</title>
     </head>
     <body>
         <h1>Welcome!</h1>
         <form method = "POST" action = '/'>
-            <label for = "login-username">Username: </label>
-            <input type = "text" id = "login-username" name = "username"/>
-            <input type = "submit" id = "login-button" value = "Login" />
+            {% csrf_token %}
+            <label for = "{{ form.username.id_for_label }}">{{ form.username.label }}:</label>{{ form.username }}
+            {% if form.errors %}
+            <div class = "error">{{ form.username.errors }}</div>
+            {% endif %}
+            <input type = "submit" id = "login-button" />
         </form>
     </body>
 </html>
