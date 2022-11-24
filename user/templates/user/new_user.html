@@ -1,0 +1,30 @@
+{% extends "user/base.html" %}
+
+{% block title %}Create New User{% endblock %}
+
+{% block form %}
+    <form method = "POST" action = "{% url 'new_user_page' %}">
+        {% csrf_token %}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class = "error">{{ form.username.errors }}</div>
+        {% endif %}
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        {% if form.password.errors %}
+            <div class = "error">{{ form.password.errors }}</div>
+        {% endif %}
+        {{ form.repassword.label_tag }}
+        {{ form.repassword }}
+        {% if form.repassword.errors %}
+            <div class = "error">{{ form.repassword.errors }}</div>
+        {% endif %}
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class = "error">{{ form.email.errors }}</div>
+        {% endif %}
+        <input type = "submit" id = "create-new-user-button" value = "Create" />
+    </form>
+{% endblock %}

@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm, INVALID_USERNAME_ERROR
-from .models import User
+from .forms import LoginForm, NewUserForm
 
-# Create your views here.
 def login_page(request):
     form = LoginForm()
     if request.method == "POST":
@@ -11,3 +9,13 @@ def login_page(request):
             form.save()
             return redirect('/')
     return render(request, "user/login.html", {"form": form})
+
+def new_user_page(request):
+    form = NewUserForm()
+    if request.method == "POST":
+        form = NewUserForm(data = request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "user/success.html")
+
+    return render(request, "user/new_user.html", {"form": form})

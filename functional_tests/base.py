@@ -4,7 +4,7 @@ from selenium.common.exceptions import WebDriverException
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import time
 
-class FunctionalTestBase(StaticLiveServerTestCase):
+class FunctionalTest(StaticLiveServerTestCase):
     sample_username = "sky2608ng"
     options = Options()
     options.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
@@ -16,15 +16,19 @@ class FunctionalTestBase(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def wait(self, fn):
+    def wait(fn):
         def modified_fn(*args, **kwargs):
-            start_time = time.now()
+            start_time = time.time()
             while(True):
                 try:
-                    fn(*args, **kwargs)
+                    return fn(*args, **kwargs)
                 except (AssertionError, WebDriverException) as e:
-                    if time.now() - start_time > self.wait_time:
+                    if time.time() - start_time > FunctionalTest.wait_time:
                         raise e
                     time.sleep(0.5)
 
         return modified_fn
+
+    @wait
+    def wait_for(self, fn):
+        return fn()

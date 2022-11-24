@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset = "utf-8">
-        <meta name = "viewport" content = "width = device-width">
-        <title>Login</title>
-    </head>
-    <body>
-        <h1>Welcome!</h1>
-        <form method = "POST" action = '/'>
-            {% csrf_token %}
-            <label for = "{{ form.username.id_for_label }}">{{ form.username.label }}:</label>{{ form.username }}
-            {% if form.errors %}
-            <div class = "error">{{ form.username.errors }}</div>
-            {% endif %}
-            <input type = "submit" id = "login-button" />
-        </form>
-    </body>
-</html>
+{% extends "user/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block form %}
+    <form method = "POST" action = "{% url 'login_page' %}">
+        {% csrf_token %}
+        <label for = "{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+        {{ form.username }}
+        {% if forms.errors %}
+            <div class = "error">{{ forms.username.error }}</div>
+        {% endif %}
+        <label for = "{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+        {{ form.password }}
+        <a href = "{% url 'new_user_page' %}" id = "create-new-user-link">Create a new User</a>
+        {% if form.errors %}
+        <div class = "error">{{ form.username.errors }}</div>
+        {% endif %}
+        <input type = "submit" id = "login-button" value = "Log In"/>
+    </form>
+{% endblock %}
