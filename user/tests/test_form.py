@@ -3,8 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from ..forms import (
     LoginForm, NewUserForm, 
     INVALID_USERNAME_ERROR, INVALID_PASSWORD_ERROR)
-from ..models import User
 from unittest import skip
+from ..models import User
 
 class BaseFormTest(TestCase):
     valid_username = "valid_username"
@@ -26,7 +26,6 @@ class BaseFormTest(TestCase):
             "email": email,
         }
 
-@skip
 class LoginFormTest(BaseFormTest):
     def test_login_template(self):
         form = LoginForm(data = {'username': self.valid_username, 'password': self.valid_password})
@@ -38,28 +37,9 @@ class LoginFormTest(BaseFormTest):
         self.assertIn('for="login-password', form_content)
         self.assertIn('id="login-password', form_content)
 
-    def test_key_in_invalid_username_to_login_form(self):
-        form = LoginForm(data = {'username': self.invalid_username, 'password': self.valid_password})
-        self.assertIn(INVALID_USERNAME_ERROR, form.as_p())
-
-    def test_key_in_invalid_password_to_login_form(self):
-        form = LoginForm(data = {'username': self.valid_username, 'password': self.invalid_password})
-        self.assertIn(INVALID_PASSWORD_ERROR, form.as_p())
-
-    @skip
-    def test_key_in_username_and_password_database_does_not_exists(self):
-        form = LoginForm(data = {'username': self.not_in_db_username, 'password': self.not_in_db_password})
-
-        with self.assertRaises(ObjectDoesNotExist) as e:
-            User.objects.get(pk = self.not_in_db_username)
-
-        self.assertIn(INVALID_USERNAME_ERROR, form.as_p())
-
-    @skip
-    def test_valid_input_able_to_save_in_login_form(self):
-        form = LoginForm(data = {'username': 'sky2608ng'})
-        new_item = form.save()
-        print(new_item)
+    def test_valid_input_key_in_to_login_form(self):
+        form = LoginForm(data = {'username': 'username', 'password': 'password'})
+        self.assertTrue(form.is_valid())
 
 class NewUserFormTest(BaseFormTest):
     def test_cannot_save_empty_form(self):

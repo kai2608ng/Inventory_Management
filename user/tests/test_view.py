@@ -10,7 +10,6 @@ class UserLoginViewTest(TestCase):
     login_page_url = reverse('login_page')
 
     def test_user_able_to_browse_login_page(self):
-        print(self.login_page_url)
         response = self.client.get(self.login_page_url) 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user/login.html')
@@ -19,29 +18,26 @@ class UserLoginViewTest(TestCase):
         response = self.client.get(self.login_page_url)
         response_content = response.content.decode()
         # Check username is displayed
-        self.assertIn('for = "login-username"', response_content)
+        self.assertIn('for="login-username"', response_content)
         self.assertIn('id="login-username"', response_content)
         # Check password is displayed
-        self.assertIn('for = "login-password', response_content)
+        self.assertIn('for="login-password', response_content)
         self.assertIn('id="login-password', response_content)
         # Check create new user link is displayed
         self.assertIn('id = "create-new-user-link"', response_content)
         # Check login button is displayed
-        self.assertIn('id = "login-button"', response_content)
+        self.assertIn('class = "form-submit-button"', response_content)
 
-    @skip
     def test_login_template_using_form_template(self):
         response = self.client.get(self.login_page_url)
         self.assertIsInstance(response.context["form"], LoginForm)
 
-    @skip
     def test_invalid_input_able_to_see_error(self):
-        response = self.client.post(self.login_page_url, data = {'username': ''})
+        response = self.client.post(self.login_page_url, data = {'username': '', 'password': ''})
         self.assertIn('<div class = "error">', response.content.decode())
 
-    @skip
-    def test_invalid_input_renders_login_template(self):
-        response = self.client.post(self.login_page_url, data = {'username': ''})
+    def test_invalid_input_still_renders_login_template(self):
+        response = self.client.post(self.login_page_url, data = {'username': '', 'password': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "user/login.html")
 
@@ -124,5 +120,4 @@ class CreateNewUserViewTest(TestCase):
 
     def test_show_success_message_after_successfully_create_new_account(self):
         response = self.post_valid_data()
-        print(response.content.decode())
         self.assertIn('id="success-messages"', response.content.decode())

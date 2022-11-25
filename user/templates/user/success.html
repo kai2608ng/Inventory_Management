@@ -1,6 +1,8 @@
 {% extends "user/base.html" %}
 
 {% block form %}
-        <div id="success-messages">Your Account has been created succesfully!</div>
-        <a id="back-to-login-button" href = "{% url 'login_page' %}">Back to Login Page</div>
+    <div class = "form-container">
+        <div class = "form-title" id="success-messages">Your Account has been created succesfully!</div>
+        <a class = "form-submit-button" id="back-to-login-button" href = "{% url 'login_page' %}">Back to Login Page</a>
+	</div>
 {% endblock %}

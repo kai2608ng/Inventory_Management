@@ -1,10 +1,10 @@
 from django import forms
 from .models import User
 
-INVALID_USERNAME_ERROR = "Please enter a valid username"
-INVALID_PASSWORD_ERROR = "Please enter a valid password"
-INVALID_REPASSWORD_ERROR = "Please enter same password"
-INVALID_EMAIL_ERROR = "Please enter a valid email"
+INVALID_USERNAME_ERROR = "Please enter a valid username."
+INVALID_PASSWORD_ERROR = "Please enter a valid password."
+INVALID_REPASSWORD_ERROR = "Please enter same password."
+INVALID_EMAIL_ERROR = "Please enter a valid email."
 
 class LoginForm(forms.models.ModelForm):
     class Meta:
@@ -13,7 +13,6 @@ class LoginForm(forms.models.ModelForm):
         widgets = {
             "username": forms.TextInput(
                 attrs = {
-                    "placeholder": "Username",
                     "id": "login-username",
                     "name": "username"
                 }
@@ -37,7 +36,6 @@ class NewUserForm(forms.ModelForm):
         widgets = {
             "username": forms.TextInput(
                 attrs = {
-                    "placeholder": "Username",
                     "id": "new-username",
                     "name": "username",
                 }
@@ -50,7 +48,6 @@ class NewUserForm(forms.ModelForm):
             ),
             "email": forms.EmailInput(
                 attrs = {
-                    "placeholder": "example@mail.com",
                     "id": "new-email",
                     "name": "email"
                 }
@@ -71,6 +68,17 @@ class NewUserForm(forms.ModelForm):
         ),
         error_messages = {
             "required": INVALID_REPASSWORD_ERROR
-        }
+        },
+        label = "Re-type Password"
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        repassword = cleaned_data.get("repassword")
+
+        if password != repassword:
+            error_messages = "Please key in same password"
+            self.add_error("password", error_messages)
+            self.add_error("repassword", error_messages)
     

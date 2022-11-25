@@ -3,10 +3,12 @@
     <head>
         <meta charset = "utf-8">
         <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
-        <title>{% block title %}{% endblock %}</title>
+        {% load static %}
+        <link rel = "stylesheet" href = "{% static 'user/user.css' %}">
+        <title>IM</title>
     </head>
     <body>
-        <div class = "main-form">
+        <div class = "main-form-container">
             {% block form %}{% endblock %}
         </div>
     </body>
