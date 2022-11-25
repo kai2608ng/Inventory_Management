@@ -10,8 +10,8 @@ def login_page(request):
         password = request.POST["password"]
         user = authenticate(request, username = username, password = password)
         if user is not None:
+            response = redirect(f"home/{username}/")
             token = Token.objects.create(user = user)
-            response = render(request, "user/login.html", {"form": form})
             response['token'] = token
             return response
             
@@ -26,7 +26,3 @@ def new_user_page(request):
             return render(request, "user/success.html")
 
     return render(request, "user/new_user.html", {"form": form})
-
-
-def test_view(request):
-    pass

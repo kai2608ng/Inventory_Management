@@ -6,22 +6,20 @@ from unittest import skip
 class UserLoginTest(FunctionalTest):
     invalid_username = "invalid_username"
     invalid_password = "invalid_password"
-    sample_username = "sky2608ng"
-    sample_password = "skyng123"
 
     new_username = "new_username"
     new_password = "new_password"
     new_repassword = new_password
     new_email = "new@email.com"
 
-    @skip
     def test_user_login(self):
         self.browser.get(self.live_server_url)
 
         # User able to see the login template 
         username_input_box = self.browser.find_element(By.ID, "login-username")
         password_input_box = self.browser.find_element(By.ID, "login-password")
-        login_button =  self.browser.find_element(By.ID, "login-button")
+        login_button =  self.browser.find_element(By.CLASS_NAME, "form-submit-button")
+
 
         # User key in its data and able to login
         self.wait_for(lambda: username_input_box.send_keys(self.sample_username))
@@ -29,8 +27,9 @@ class UserLoginTest(FunctionalTest):
         self.wait_for(lambda: login_button.click())
 
         # User successfully login to its own home page
-        self.assertEqual(self.browser.current_url, reverse("home_page", args = (self.sample_username, )))
+        self.assertIn(reverse("home_page", args = (self.sample_username, )), self.browser.current_url)
 
+    @skip
     def test_user_create_new_user(self):
         self.browser.get(self.live_server_url)
 
@@ -45,7 +44,7 @@ class UserLoginTest(FunctionalTest):
         password_input_box = self.browser.find_element(By.ID, "new-password")
         repassword_input_box = self.browser.find_element(By.ID, "new-repassword")
         email_input_box = self.browser.find_element(By.ID, "new-email")
-        create_new_user_button = self.browser.find_element(By.ID, "create-new-user-button")
+        create_new_user_button = self.browser.find_element(By.CLASS_NAME, "form-submit-button")
 
         # User key in data
         self.wait_for(lambda: username_input_box.send_keys(self.new_username))
