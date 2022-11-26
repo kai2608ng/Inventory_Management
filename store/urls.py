@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import home_page
+from .views import home_page, new_store_page
 
 urlpatterns = [
-    path('home/<str:username>/', home_page, name = "home_page")
+    path('home/', home_page, name = "home_page"),
+    path('new_store/', new_store_page, name = "new_store_page"),
 ]

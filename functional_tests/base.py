@@ -4,7 +4,7 @@ from selenium.common.exceptions import WebDriverException
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import time
 from user.models import User
-
+from store.models import Store
 
 class FunctionalTest(StaticLiveServerTestCase):
     sample_username = "sky2608ng"
@@ -15,7 +15,9 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox(options = self.options)
-        User.objects.create_user(username = self.sample_username, password = self.sample_password)
+        user = User.objects.create_user(username = self.sample_username, password = self.sample_password)
+        # Store.objects.create(store_name = "store1", user = user)
+        # Store.objects.create(store_name = "store2", user = user)
 
     def tearDown(self):
         self.browser.quit()

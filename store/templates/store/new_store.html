@@ -1,0 +1,19 @@
+{% extends "store/base.html" %}
+
+{% block nav_title %}{{username}}{% endblock %}
+
+{% block main %}
+<div class = "main-form-container">
+    <div class = "form-container">
+        <div class = "form-title">Create a New Store</div>
+        <form method = "POST" class = "form" action = "{% url 'new_store_page' username %}">
+            {% csrf_token %}
+            <div class = "form-field-container">
+                {{form.store_name.label_tag}}
+                {{form.store_name}}
+            </div>
+            <button type = "submit" class = "form-submit-button">Create</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

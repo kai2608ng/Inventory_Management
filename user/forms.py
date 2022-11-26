@@ -78,7 +78,6 @@ class NewUserForm(forms.ModelForm):
         repassword = cleaned_data.get("repassword")
 
         if password != repassword:
-            error_messages = "Please key in same password"
-            self.add_error("password", error_messages)
-            self.add_error("repassword", error_messages)
+            self.add_error("password", INVALID_REPASSWORD_ERROR)
+            self.add_error("repassword", INVALID_REPASSWORD_ERROR)
     
