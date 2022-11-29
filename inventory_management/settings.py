@@ -28,6 +28,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = "user.User"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'user.authentication.TokenBackend',]
 # Application definition
 
 INSTALLED_APPS = [

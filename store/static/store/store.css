@@ -118,15 +118,7 @@ body{
 .store-item-title{
     font-weight: 600;
     font-size: 1.2em;
-    padding: 20px;
     margin: 10px 0px;
-    border-bottom: 2px solid black;
-}
-
-.store-item-description{
-    font-size: 1.2em;
-    height: 10vh;
-    padding: 10px;
 }
 
 .store-empty-container{

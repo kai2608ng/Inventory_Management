@@ -5,27 +5,31 @@ from .models import User, Token
 
 def login_page(request):
     form = LoginForm()
+
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username = username, password = password)
-
+        
         if user is not None:
             try:
                 token = Token.objects.get(user = user)
             except Token.DoesNotExist:
                 token = Token.objects.create(user = user)
         
-            response = redirect(f"{username}/home/")
-            response['token'] = token
             auth_login(request, user)
-            
-            return response
+            request.session['token'] = token.key
+
+            return redirect(f"{username}/home/")
+
+        form = LoginForm(data = request.POST)
+        form.full_clean()
             
     return render(request, "user/login.html", {"form": form})
 
 def new_user_page(request):
     form = NewUserForm()
+    
     if request.method == "POST":
         form = NewUserForm(data = request.POST)
         if form.is_valid():

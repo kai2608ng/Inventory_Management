@@ -10,5 +10,5 @@ class Store(models.Model):
         verbose_name_plural = "Stores"
         db_table = "Store"
 
-    store_name = models.CharField(max_length = 100, null = False, blank = False)
+    store_name = models.CharField(max_length = 100, null = False, blank = False, unique = True)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
