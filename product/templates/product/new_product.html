@@ -1,0 +1,21 @@
+{% extends "store/base.html" %}
+
+{% block main %}
+<div class = "main-form-container">
+    <div class = "form-container">
+        <div class = "form-title">Create a New Product</div>
+        <form method = "POST" class = "form" action = "{% url 'new_product_page' username %}" novalidate>
+            {% csrf_token %}
+            <div class = "form-field-container">
+                {{form.product_name.label_tag}}
+                {{form.product_name}}
+                {% if form.product_name.errors %}
+                    <div class = "error">{{form.product_name.errors.as_text}}</div>
+                {% endif%}
+            </div>
+            {{form.store_name}}
+            <button type = "submit" class = "form-submit-button">Create</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

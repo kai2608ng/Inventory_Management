@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, logout as auth_logout
 from .forms import LoginForm, NewUserForm
 from .models import User, Token
 
@@ -11,13 +11,12 @@ def login_page(request):
         password = request.POST["password"]
         user = authenticate(request, username = username, password = password)
         
-        if user is not None:
+        if user:
             try:
                 token = Token.objects.get(user = user)
             except Token.DoesNotExist:
                 token = Token.objects.create(user = user)
-        
-            auth_login(request, user)
+
             request.session['token'] = token.key
 
             return redirect(f"{username}/home/")
@@ -42,4 +41,5 @@ def new_user_page(request):
 
 def logout(request):
     auth_logout(request)
+    request.session.pop('token', None)
     return redirect('/')

@@ -7,10 +7,11 @@
         <link rel = "stylesheet" href = "{% static 'store/store.css' %}">
         <link rel = "stylesheet" href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
         <link rel = "stylesheet" href = "{% static 'store/new_store.css' %}">
+        <link rel = "stylesheet" href = "{% static 'product/product.css' %}">
     </head>
     <body>
         <div class = "nav-container">
-            <div class = "nav-title">{% block nav_title %}{% endblock %}</div>
+            <div class = "nav-title">{{username}}</div>
             <div class = "nav-option-container">
                 <a class = "nav-option" href = "{% url 'home_page' username %}">Store</a>
                 <a class = "nav-option" href = "{% url 'product_page' username %}">Product</a>

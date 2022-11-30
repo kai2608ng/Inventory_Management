@@ -11,4 +11,4 @@ class Store(models.Model):
         db_table = "Store"
 
     store_name = models.CharField(max_length = 100, null = False, blank = False, unique = True)
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    user = models.OneToOneField(User, on_delete = models.CASCADE)

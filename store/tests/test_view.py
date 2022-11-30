@@ -79,13 +79,3 @@ class CreateNewStoreViewTest(StoreViewTest):
     def test_show_new_store_template(self):
         response = self.get("/user_does_not_have_store/new_store/")
         self.assertIn('id="store-name', response.content.decode())
-
-
-class StoreDetailViewTest(StoreViewTest):
-    def test_able_to_browser_store_detail_page(self):
-        response = self.get_webpage(
-            "/user_has_store/store1/", 
-            "user_has_store",
-            "password1")
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "store/store_detail.html")

@@ -1,7 +1,5 @@
 {% extends "store/base.html" %}
 
-{% block nav_title %}{{username}}{% endblock %}
-
 {% block main %}
     <div class = "store-container">
         <div class = "store-container-title">Your Store</div>
@@ -14,16 +12,16 @@
                 {% endfor %}
             </div>
         {% else %}
-        <div class = "store-empty-container">
+        <div class = "empty-container">
             <span class = "empty-title">No Store found</span>
             <span class = "empty-description">It seems, No Store is created yet</span>
             <span class = "empty-description">Let's add some Store!</span>
         </div>
-        {% endif %}
-        <a class = "add-store-container" href = "{% url 'new_store_page' username %}">
+        <a class = "add-container" href = "{% url 'new_store_page' username %}">
             <span class = "material-symbols-outlined add-icon">add</span>
-            <span class = "add-store-text">Add Store</span>
+            <span class = "add-text">Add Store</span>
         </a>
+        {% endif %}
     </div>
     
 {% endblock %}

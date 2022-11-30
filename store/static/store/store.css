@@ -121,7 +121,7 @@ body{
     margin: 10px 0px;
 }
 
-.store-empty-container{
+.empty-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -145,7 +145,7 @@ body{
     margin: 5px;
 }
 
-.add-store-container{
+.add-container{
     margin: 20px;
     border-radius: 10px;
     padding: 10px;
@@ -160,12 +160,12 @@ body{
     color: black;
 }
 
-.add-store-container:hover{
+.add-container:hover{
     background-color:lightgray;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
-.add-store-text{
+.add-text{
     font-size: 1.5em;
     font-weight: 600;
     margin: 5px 10px;
