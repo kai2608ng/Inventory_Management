@@ -4,7 +4,7 @@
 <div class = "main-detail-container">
     <div class = "detail-container">
         <div class = "detail-title">Material</div>
-        <div class = "detail-content-container">
+        <div class = "detail-content-container material">
             {% if materials.count %}
                 {% for material in materials %}
                     <div class = "material-container">
@@ -12,7 +12,10 @@
                         <div class = "material-detail-container">
                             <div class = "material-detail-text">ID: {{material.id}}</div>
                             <div class = "material-detail-text">Name: {{material.material_name}}</div>
-                            <a class = "edit-button" href = "{% url 'edit_page' material.id %}">Edit</a>
+                            <div class = "material-detail-text">Price: {{material.price}}</div>
+                            <div class = "material-detail-text">Max Capacity: {{material.max_capacity}}</div>
+                            <div class = "material-detail-text">Current Capacity: {{material.current_capacity}}</div>
+                            <a class = "edit-button" href = "{% url 'edit_material_page' username=username material_id=material.id %}">Edit</a>
                         </div>
                     </div>
                 {% endfor %}

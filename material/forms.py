@@ -4,7 +4,7 @@ from .models import Material
 class MaterialForm(forms.models.ModelForm):
     class Meta:
         model = Material
-        fields = ['material_name', 'price', 'max_capacity', 'current_capacity']
+        fields = ['material_name', 'price', 'max_capacity', 'current_capacity', 'store']
         widgets = {
             'material_name': forms.TextInput(
                 attrs = {
@@ -29,12 +29,19 @@ class MaterialForm(forms.models.ModelForm):
                     "id": "current-capacity",
                     "name": "current_capacity"
                 }
+            ),
+            "store": forms.HiddenInput(
+                attrs = {
+                    "id": "store",
+                    "name": "store"
+                }
             )
         }
-        errors_message = {
+        error_messages = {
             "material_name": {"required": "Please key in a valid material name"},
             "price": {"required": "Please key in a valid price"},
             "max_capacity": {"required": "Please enter a valid max capacity"},
             "current_capacity": {"required": "Please enter a valid current capacity"}
         }
+
            

@@ -135,7 +135,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "user/static/"),
     os.path.join(BASE_DIR, "store/static/"),
     os.path.join(BASE_DIR, "product/static/"),
-    # os.path.join(BASE_DIR, "material/static/"),
+    os.path.join(BASE_DIR, "material/static/"),
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

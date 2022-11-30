@@ -13,7 +13,7 @@ class Material(models.Model):
     material_name = models.CharField(max_length = 100, blank = False, null = False)
     product = models.ManyToManyField(Product, through = "MaterialQuantity")
     price = models.DecimalField(max_digits = 100, decimal_places = 2, null = False)
-    store = models.ForeignKey(Store, on_delete = models.CASCADE, null = False, blank = False, related_name = "store_entries")
+    store = models.ForeignKey(Store, on_delete = models.CASCADE, null = False, blank = False, related_name = "material_entries")
     max_capacity = models.PositiveBigIntegerField(null = False, default = 0)
     current_capacity = models.PositiveBigIntegerField(null = False, default = 0)
 
