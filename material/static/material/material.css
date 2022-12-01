@@ -36,6 +36,18 @@
     width: 100%;
 }
 
+input:read-only{
+    background-color: lightgray;
+    color:rgb(157, 154, 154);
+    cursor: context-menu;
+}
+
+input:read-only:focus{
+    background-color: lightgray;
+    color:rgb(157, 154, 154);
+    cursor: context-menu;
+}
+
 .material-detail-text{
     margin: 5px;
 }
@@ -53,4 +65,17 @@
 
 .edit-button:hover{
     background-color: rgb(250, 238, 228);
+}
+
+.delete:hover{
+    color: white;
+    background-color: #D90429;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.error-main-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
 }

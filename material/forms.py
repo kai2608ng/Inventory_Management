@@ -1,5 +1,6 @@
 from django import forms
 from .models import Material
+from django.core.exceptions import ValidationError
 
 class MaterialForm(forms.models.ModelForm):
     class Meta:
@@ -30,18 +31,21 @@ class MaterialForm(forms.models.ModelForm):
                     "name": "current_capacity"
                 }
             ),
-            "store": forms.HiddenInput(
-                attrs = {
-                    "id": "store",
-                    "name": "store"
-                }
-            )
         }
         error_messages = {
             "material_name": {"required": "Please key in a valid material name"},
             "price": {"required": "Please key in a valid price"},
             "max_capacity": {"required": "Please enter a valid max capacity"},
             "current_capacity": {"required": "Please enter a valid current capacity"}
-        }
+        }    
 
-           
+    def clean(self):
+        cleaned_data = super().clean()
+        max_capacity = cleaned_data.get("max_capacity")
+        current_capacity = cleaned_data.get("current_capacity")
+
+        if current_capacity and max_capacity and current_capacity > max_capacity:
+            self.add_error("current_capacity", "Your current capacity is larger than max capacity!")
+            self.add_error("max_capacity", "Your current capacity is larger than max capacity!")
+
+        return cleaned_data

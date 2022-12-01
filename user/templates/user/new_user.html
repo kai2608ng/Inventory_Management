@@ -23,7 +23,7 @@
                 {{ form.repassword.label_tag }}
                 {{ form.repassword }}
                 {% if form.repassword.errors %}
-                    <div class = "error">{{ form.repassword.errors.as_text }}</div>
+                    <div class = "error">* {{ form.repassword.errors.get_context.errors.0 }}</div>
                 {% endif %}
             </div>
             <div class = "form-field-container">

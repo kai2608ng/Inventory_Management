@@ -13,7 +13,6 @@ class StoreViewTest(TestCase):
         Token.objects.create(user = user_has_store)
         Token.objects.create(user = user_does_not_have_store)
         Store.objects.create(store_name = "store1", user = user_has_store)
-        Store.objects.create(store_name = "store2", user = user_has_store)
 
     def login(self, username, password):
         return self.client.post("/", data = {"username": username, "password": password})
@@ -30,7 +29,7 @@ class StoreViewTest(TestCase):
     def get_webpage(self, path, username, password):
         self.user_authentication(username, password)
         return self.client.get(path)
-@skip
+
 class HomePageViewTest(StoreViewTest):
     def test_show_redirected_to_home_page(self):
         response = self.login("user_has_store", "password1")
@@ -66,7 +65,6 @@ class HomePageViewTest(StoreViewTest):
             "password2")
         self.assertIn("No Store found", response.content.decode())
 
-@skip
 class CreateNewStoreViewTest(StoreViewTest):
     def test_able_to_browse_new_store_page(self):
         response = self.get_webpage(
@@ -76,6 +74,9 @@ class CreateNewStoreViewTest(StoreViewTest):
         self.assertTemplateUsed(response, 'store/new_store.html')
         self.assertEqual(response.status_code, 200)
 
-    def test_show_new_store_template(self):
-        response = self.get("/user_does_not_have_store/new_store/")
-        self.assertIn('id="store-name', response.content.decode())
+    def test_show_empty_store_template(self):
+        response = self.get_webpage(
+            "/user_does_not_have_store/new_store/",
+            "user_does_not_have_store",
+            "password2")
+        self.assertIn('for="store-name"', response.content.decode())

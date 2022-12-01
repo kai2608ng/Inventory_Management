@@ -23,6 +23,8 @@ class Material(models.Model):
                 material_name: {self.material_name}, 
                 price: {self.price}, 
                 product: {self.product},
+                max_capacity: {self.max_capacity},
+                current_capacity: {self.current_capacity},
                 store: {self.store}
                 ]
             """)

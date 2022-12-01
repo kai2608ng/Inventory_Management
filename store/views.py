@@ -15,7 +15,7 @@ def home_page(request, username):
     
     if valid_token_user:
         auth_login(request, valid_token_user)
-        store = Store.objects.filter(user = request.user)
+        store = Store.objects.filter(user = valid_token_user)
         return render(request, "store/home.html", {'username': username, 'store': store})
 
     return redirect(reverse("login_page"))
@@ -27,7 +27,8 @@ def new_store_page(request, username):
 
         if request.method == "POST":
             store_name = request.POST["store_name"]
-            form = StoreForm(data = {"store_name": store_name, "user": request.user})
+            form = StoreForm(data = {"store_name": store_name, "user": valid_token_user})
+
             if form.is_valid():
                 form.save()
                 return redirect(reverse('home_page', args = (username, )))
