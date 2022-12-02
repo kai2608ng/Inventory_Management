@@ -45,5 +45,3 @@ class ProductModelTest(TestCase):
         Product.objects.create(product_name = "product", store = store1)
         Product.objects.create(product_name = "product", store = store2)
         self.assertEqual(Product.objects.all().count(), 2)
-
-

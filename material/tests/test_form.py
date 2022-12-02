@@ -1,5 +1,6 @@
-from ..forms import MaterialForm
+from ..forms import MaterialForm, MaterialQuantityForm
 from store.models import Store
+from product.models import Product
 from django.test import TestCase
 from ..models import Material
 from django.contrib.auth import get_user_model
@@ -53,4 +54,35 @@ class MaterialFormTest(TestCase):
         form = MaterialForm(data, instance = material)
         self.assertTrue(form.is_valid())
         
+class MaterialQuantityFormTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(username = 'user', password = 'pass', email = 'e@mail.com')
+        Store.objects.create(store_name = 'store', user = user)
+
+    def test_save_item(self):
+        store = Store.objects.get(store_name = "store")
+        material = Material.objects.create(
+            material_name = "material1", price = 1.5, max_capacity = 100,
+            current_capacity = 50, store = store
+        )
+        form = MaterialQuantityForm(data = {"material": material, "quantity": 5})
+        self.assertTrue(form.is_valid())
+
+    def test_save_material_with_id(self):
+        store = Store.objects.get(store_name = "store")
+        Material.objects.create(
+            material_name = "material1", price = 1.5, max_capacity = 100,
+            current_capacity = 50, store = store
+        )
+        form = MaterialQuantityForm(data = {'material': 1, "quantity": 1})
+        self.assertTrue(form.is_valid())
+
+    def test_save_invalid_material(self):
+        form = MaterialQuantityForm(data = {'material': 1, "quantity": 10})
+        self.assertFalse(form.is_valid())
+
+    def test_save_invalid_material_returns_error_messages(self):
+        form = MaterialQuantityForm(data = {'material': 1, "quantity": 10})
+        print(form.errors['material'].as_text)
+
 

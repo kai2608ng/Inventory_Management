@@ -1,6 +1,8 @@
 from django.test import TestCase
 from user.models import User, Token
 from store.models import Store
+from material.models import Material
+from ..models import Product
 
 class ProductBaseTest(TestCase):
     def setUp(self):
@@ -48,7 +50,7 @@ class NewProductViewTest(ProductBaseTest):
     def test_able_to_see_new_product_if_key_in_valid_input(self):
         user = User.objects.get(username = "user1")
         store = Store.objects.get(user = user)
-        response = self.post_webpage(
+        self.post_webpage(
             "/user1/new_product/", 
             "user1", "password1", 
             data = {'product_name': 'product1', 'store': store})
@@ -56,3 +58,22 @@ class NewProductViewTest(ProductBaseTest):
             '/user1/product/',
             "user1", "password1")
         self.assertIn("product-detail-text", response.content.decode())
+
+class EditMaterialViewTest(ProductBaseTest):
+    def test_able_to_browse_edit_product_page(self):
+        store = Store.objects.get(store_name = "store1")
+        Product.objects.create(product_name = "product", store = store)
+        response = self.get_webpage("/user1/edit_product/1/", 'user1', 'password1')
+        self.assertEqual(response.status_code, 200)
+    
+class DeleteMaterialViewTest(ProductBaseTest):
+    def test_able_to_browse_delete_product_page(self):
+        store = Store.objects.get(store_name = "store1")
+        Product.object.create(product_name = "product1", store = store)
+        response = self.get_webpage("/user1/delete_product/1/", 'user1', 'password1')
+        self.assertEqual(response.status_code, 302)
+
+    def test_show_error_if_product_does_exist(self):
+        response = self.get_webpage("/user1/delete_product/1/", 'user1', 'password1')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'product/product_error.html')

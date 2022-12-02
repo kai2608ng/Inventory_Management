@@ -18,16 +18,7 @@ class Material(models.Model):
     current_capacity = models.PositiveBigIntegerField(null = False, default = 0)
 
     def __str__(self):
-        return (
-            f"""[
-                material_name: {self.material_name}, 
-                price: {self.price}, 
-                product: {self.product},
-                max_capacity: {self.max_capacity},
-                current_capacity: {self.current_capacity},
-                store: {self.store}
-                ]
-            """)
+       return self.material_name
 
 class MaterialQuantity(models.Model):
     class Meta:
@@ -42,5 +33,5 @@ class MaterialQuantity(models.Model):
 
     material = models.ForeignKey(Material, on_delete = models.CASCADE, related_name = "material_entries")
     product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name = "product_entries")
-    quantity = models.PositiveBigIntegerField()
+    quantity = models.PositiveBigIntegerField(default = 0)
 

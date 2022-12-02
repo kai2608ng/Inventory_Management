@@ -1,6 +1,5 @@
 from django import forms
-from .models import Material
-from django.core.exceptions import ValidationError
+from .models import Material, MaterialQuantity
 
 class MaterialForm(forms.models.ModelForm):
     class Meta:
@@ -49,3 +48,38 @@ class MaterialForm(forms.models.ModelForm):
             self.add_error("max_capacity", "Your current capacity is larger than max capacity!")
 
         return cleaned_data
+
+class MaterialQuantityForm(forms.models.ModelForm):
+    class Meta:
+        model = MaterialQuantity
+        fields = ['material', 'quantity']
+        widgets = {
+            "material": forms.Select(
+                attrs = {
+                    'name': "material"
+                },
+                choices = [
+                    (material, material.material_name) 
+                    for material in Material.objects.all()
+                ]
+            ),
+            "quantity": forms.NumberInput(
+                attrs = {
+                    'name': "quantity"
+                }
+            )
+        }
+
+    def clean_quantity(self):
+        quantity = self.cleaned_data['quantity']
+        if quantity < 0:
+            self.add_error("quantity", "Please enter a valid quantity")
+
+        return quantity
+
+    def clean_material(self):
+        material = self.cleaned_data["material"]
+        if not material:
+            self.add_error("material", "Please select a material")
+
+        return material

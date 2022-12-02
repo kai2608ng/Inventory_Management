@@ -4,6 +4,7 @@ from product.models import Product
 from store.models import Store
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
+from django.db import transaction
 
 User = get_user_model()
 
@@ -68,6 +69,22 @@ class MaterialQuantityTest(TestCase):
         with self.assertRaises(IntegrityError):
             MaterialQuantity.objects.create(product = product, material = material, quantity = 5)
 
+    def test_save_model_using_material_id(self):
+        store = Store.objects.get(store_name = "store1")
+        product = Product.objects.create(product_name = "product1", store = store)
+        Material.objects.create(material_name = "material1", price = 1.5, store= store)
+        with self.assertRaises(ValueError):
+            MaterialQuantity.objects.create(product = product, material = 1, quantity = 5)
 
-
+    def test_save_model_with_duplicated_product_but_the_first_is_saved(self):
+        store = Store.objects.get(store_name = "store1")
+        product = Product.objects.create(product_name = "product1", store = store)
+        material = Material.objects.create(material_name = "material1", price = 1.5, store= store)
+        MaterialQuantity.objects.create(product = product, material = material, quantity = 5)
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                MaterialQuantity.objects.create(product = product, material = material, quantity = 5)
         
+        self.assertEqual(MaterialQuantity.objects.all().count(), 1)
+
+

@@ -4,7 +4,7 @@
 <div class = "main-detail-container">
     <div class = "detail-container">
         <div class = "detail-title">Products</div>
-        <div class = "detail-content-container product">
+        <div class = "detail-content-container">
             {% if products.count %}
                 {% for product in products %}
                     <div class = "product-container">
@@ -12,6 +12,7 @@
                         <div class = "product-detail-container">
                             <div class = "product-detail-text">ID: {{product.id}}</div>
                             <div class = "product-detail-text">Name: {{product.product_name}}</div>
+                            <a class = "edit-button" href = "{% url 'edit_product_page' username=username product_id=product.id %}">Edit</a>
                         </div>
                     </div>
                 {% endfor %}

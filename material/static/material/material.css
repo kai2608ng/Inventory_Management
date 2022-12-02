@@ -1,7 +1,3 @@
-.material{
-    flex-direction: column;
-}
-
 .material-container{
     display: flex;
     flex-direction: row;
