@@ -87,4 +87,13 @@ class MaterialQuantityTest(TestCase):
         
         self.assertEqual(MaterialQuantity.objects.all().count(), 1)
 
+    def test_obtain_material_from_product_id(self):
+        store = Store.objects.get(store_name = "store1")
+        product = Product.objects.create(product_name = "product1", store = store)
+        material1 = Material.objects.create(material_name = "material1", price = 1.5, store= store)
+        material2 = Material.objects.create(material_name = "material2", price = 1.5, store= store)
+        MaterialQuantity.objects.create(product = product, material = material1, quantity = 5)
+        MaterialQuantity.objects.create(product = product, material = material2, quantity = 5)
+        print(MaterialQuantity.objects.filter(product__id = product.id))
+
 

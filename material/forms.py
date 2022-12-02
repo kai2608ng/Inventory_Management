@@ -49,26 +49,31 @@ class MaterialForm(forms.models.ModelForm):
 
         return cleaned_data
 
-class MaterialQuantityForm(forms.models.ModelForm):
-    class Meta:
-        model = MaterialQuantity
-        fields = ['material', 'quantity']
-        widgets = {
-            "material": forms.Select(
-                attrs = {
-                    'name': "material"
-                },
-                choices = [
-                    (material, material.material_name) 
-                    for material in Material.objects.all()
-                ]
-            ),
-            "quantity": forms.NumberInput(
-                attrs = {
-                    'name': "quantity"
-                }
-            )
+class MaterialQuantityForm(forms.Form):
+    material = forms.ChoiceField(
+        required = True, 
+        widget = forms.Select(
+            attrs = {
+                "name": "material"
+            }),
+        choices = [
+            (material.id, material.material_name) 
+            for material in Material.objects.all()
+        ]
+    )
+
+    quantity = forms.fields.IntegerField(
+        required = True,
+        widget = forms.NumberInput(
+            attrs = {
+                "name": "quantity"
+            }
+        ),
+        initial = 0,
+        error_messages = {
+            "required": "Please key in a valid quantity"
         }
+    )
 
     def clean_quantity(self):
         quantity = self.cleaned_data['quantity']

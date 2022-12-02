@@ -111,28 +111,82 @@ def edit_product_page(request, username, product_id):
 
     if valid_token_user:
         product = Product.objects.get(pk = product_id)
-        material_quantities = MaterialQuantity.objects.filter(product__id = product_id)
         store = Store.objects.get(user = valid_token_user)
+        material_quantities = MaterialQuantity.objects.filter(product__id = product_id)
+
         product_initial_data = {
             "product_name": product.product_name,
             "store": store
         }
-        mq_initial_data = {
-            "material": material_quantities[0].material.material_name,
-            "quantity": material_quantities[0].quantity
-        }
+
+        mq_initial_data = [{
+            "material": material_quantity.material.pk,
+            "quantity": material_quantity.quantity
+        } for material_quantity in material_quantities]
+        print(mq_initial_data)
+
         product_form = ProductForm(initial = product_initial_data)
-        material_quantity_form = MaterialQuantityForm(initial = mq_initial_data)
+        material_quantity_forms = [MaterialQuantityForm(initial = initial_data) for initial_data in mq_initial_data]
 
         if request.method == "POST":
             product_name = request.POST["product_name"]
+            materials = request.POST.getlist("material")
+            quantities = request.POST.getlist("quantity")
+            material_quantity_forms = []
+
+            material_quantity_error_flag = False
+
+            for material_id, quantity in zip(materials, quantities):
+                material_quantity_form = MaterialQuantityForm(
+                    data = {
+                        "material": material_id,
+                        "quantity": quantity
+                    }
+                )
+                material_quantity_forms.append(material_quantity_form)
+
+                if not material_quantity_form.is_valid():
+                    material_quantity_error_flag = True
+
+            if material_quantity_error_flag:
+                return render(
+                    request,
+                    "product/edit_material.html",
+                    {
+                        'username': username,
+                        "product_form": product_form,
+                        "material_quantity_forms": material_quantity_forms
+                    }
+                )
+
             data = {
                 "product_name": product_name,
                 "store": store
             }
+
             product_form = ProductForm(data = data, instance = product)
-            if product_form.is_valid():
-                product_form.save()
+
+            if product_form.is_valid() and not material_quantity_error_flag:
+                product = product_form.save()
+
+                for (material_id, quantity) in zip(materials, quantities):
+                    material = Material.objects.get(pk = material_id)
+                    MaterialQuantity.objects.update_or_create(product = product, material = material ,defaults = {"product": product, "material": material, "quantity": quantity})
+
+            material_quantities = MaterialQuantity.objects.filter(product__id = product_id)
+
+            product_initial_data = {
+                "product_name": product.product_name,
+                "store": store
+            }
+
+            mq_initial_data = [{
+                "material": material_quantity.material.pk,
+                "quantity": material_quantity.quantity
+            } for material_quantity in material_quantities]
+
+            product_form = ProductForm(initial = product_initial_data)
+            material_quantity_forms = [MaterialQuantityForm(initial = initial_data) for initial_data in mq_initial_data]
 
         return render(
             request, "product/edit_product.html", 
@@ -140,7 +194,7 @@ def edit_product_page(request, username, product_id):
                 'username': username, 
                 'product_id': product_id, 
                 "product_form": product_form,
-                "material_quantity_form": material_quantity_form
+                "material_quantity_forms": material_quantity_forms
             })
 
 def delete_product_page(request, username, product_id):

@@ -60,12 +60,7 @@ class MaterialQuantityFormTest(TestCase):
         Store.objects.create(store_name = 'store', user = user)
 
     def test_save_item(self):
-        store = Store.objects.get(store_name = "store")
-        material = Material.objects.create(
-            material_name = "material1", price = 1.5, max_capacity = 100,
-            current_capacity = 50, store = store
-        )
-        form = MaterialQuantityForm(data = {"material": material, "quantity": 5})
+        form = MaterialQuantityForm(data = {"material": 5, "quantity": 5})
         self.assertTrue(form.is_valid())
 
     def test_save_material_with_id(self):
@@ -74,15 +69,18 @@ class MaterialQuantityFormTest(TestCase):
             material_name = "material1", price = 1.5, max_capacity = 100,
             current_capacity = 50, store = store
         )
-        form = MaterialQuantityForm(data = {'material': 1, "quantity": 1})
+        form = MaterialQuantityForm(data = {'material': 4, "quantity": 1})
         self.assertTrue(form.is_valid())
 
     def test_save_invalid_material(self):
-        form = MaterialQuantityForm(data = {'material': 1, "quantity": 10})
+        form = MaterialQuantityForm(data = {'material': '1', "quantity": 10})
         self.assertFalse(form.is_valid())
 
-    def test_save_invalid_material_returns_error_messages(self):
-        form = MaterialQuantityForm(data = {'material': 1, "quantity": 10})
-        print(form.errors['material'].as_text)
+    def test_material_quantity_form_choices(self):
+        form = MaterialQuantityForm()
+        print(form.fields['material'].widget.choices)
+
+    
+
 
 
