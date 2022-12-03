@@ -16,8 +16,8 @@
                     <div class = 'error'>{{product_form.product_name.errors.as_text}}</div>
                 {% endif %}
                 <div class = "form-sub-main-container">
-                    {% for material_quantity_form in material_quantity_forms %}
                     <div class = "form-material-main-container">
+                        {% for material_quantity_form in material_quantity_forms %}
                         <div class = "form-sub-container">
                             <div class = "form-sub-main-field-container">
                                 <div class = "form-sub-field-container">
@@ -30,13 +30,14 @@
                                 </div>
                                 <span class="material-symbols-outlined close">close</span>
                             </div>
+                            <div class = "error-container">
+                                <div class = "error">{{material_quantity_form.material.errors.as_text}}</div>
+                                <div class = "error">{{material_quantity_form.quantity.errors.as_text}}</div>
+                                <div class = "error">{{material_quantity_form.non_field_errors.as_text}}</div>
+                            </div>
                         </div>
-                        <div class = "error-container">
-                            <div class = "error">{{material_quantity_form.material.errors.as_text}}</div>
-                            <div class = "error">{{material_quantity_form.quantity.errors.as_text}}</div>
-                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                     <div class = "add-material-container" id = "add-material">
                         <span class = "material-symbols-outlined add-icon">add</span>
                         <span class = "add-text">Add Material</span>

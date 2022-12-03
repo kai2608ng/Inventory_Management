@@ -25,8 +25,9 @@ def new_product_page(request, username):
     valid_token_user = stupid_authentication(request)
 
     if valid_token_user:
+        track_material = []
         product_form = ProductForm()
-        material_quantity_forms = [MaterialQuantityForm()]
+        choices = [(material.id, material.material_name) for material in Material.objects.all()]
 
         if request.method == "POST":
             product_name = request.POST['product_name']
@@ -45,7 +46,7 @@ def new_product_page(request, username):
             
             # validate all the material quantity forms
             for material_id, quantity in zip(materials, quantities):
-                material_quantity_form = MaterialQuantityForm(data = {
+                material_quantity_form = MaterialQuantityForm(track_material, choices, data = {
                     "material": material_id,
                     "quantity": quantity
                 })
@@ -63,11 +64,11 @@ def new_product_page(request, username):
                     {
                         "username": username, 
                         'product_form': product_form,
-                        "material_quantity_forms": material_quantity_forms
+                        "material_quantity_forms": material_quantity_forms,
                     }
                 )
 
-            if product_form.is_valid() and not material_quantity_error_flag:
+            if product_form.is_valid():
                 product = product_form.save()
 
                 for material_id, quantity in zip(materials, quantities):
@@ -82,25 +83,17 @@ def new_product_page(request, username):
                         continue;
 
                 # Remove all the data 
-                material_quantity_forms = [MaterialQuantityForm()]
                 product_form = ProductForm()
-                return render(
-                    request, 
-                    "product/new_product.html", 
-                    {
-                        "username": username, 
-                        'product_form': product_form,
-                        "material_quantity_forms": material_quantity_forms
-                    }
-                )
             
+        material_quantity_forms = [MaterialQuantityForm(track_material, choices)]
+
         return render(
             request, 
             "product/new_product.html", 
             {
                 "username": username, 
                 'product_form': product_form,
-                "material_quantity_forms": material_quantity_forms
+                "material_quantity_forms": material_quantity_forms,
             }
         )
 
@@ -110,6 +103,8 @@ def edit_product_page(request, username, product_id):
     valid_token_user = stupid_authentication(request)
 
     if valid_token_user:
+        track_material = []
+        choices = [(material.id, material.material_name) for material in Material.objects.all()]
         product = Product.objects.get(pk = product_id)
         store = Store.objects.get(user = valid_token_user)
         material_quantities = MaterialQuantity.objects.filter(product__id = product_id)
@@ -123,10 +118,13 @@ def edit_product_page(request, username, product_id):
             "material": material_quantity.material.pk,
             "quantity": material_quantity.quantity
         } for material_quantity in material_quantities]
-        print(mq_initial_data)
 
         product_form = ProductForm(initial = product_initial_data)
-        material_quantity_forms = [MaterialQuantityForm(initial = initial_data) for initial_data in mq_initial_data]
+        material_quantity_forms = ([
+            MaterialQuantityForm(track_material, choices, initial = initial_data) 
+            for initial_data in mq_initial_data] 
+            if len(mq_initial_data) 
+            else [MaterialQuantityForm(track_material, choices)])
 
         if request.method == "POST":
             product_name = request.POST["product_name"]
@@ -138,6 +136,8 @@ def edit_product_page(request, username, product_id):
 
             for material_id, quantity in zip(materials, quantities):
                 material_quantity_form = MaterialQuantityForm(
+                    track_material,
+                    choices,
                     data = {
                         "material": material_id,
                         "quantity": quantity
@@ -151,11 +151,12 @@ def edit_product_page(request, username, product_id):
             if material_quantity_error_flag:
                 return render(
                     request,
-                    "product/edit_material.html",
+                    "product/edit_product.html",
                     {
                         'username': username,
+                        'product_id': product_id,
                         "product_form": product_form,
-                        "material_quantity_forms": material_quantity_forms
+                        "material_quantity_forms": material_quantity_forms,
                     }
                 )
 
@@ -186,7 +187,7 @@ def edit_product_page(request, username, product_id):
             } for material_quantity in material_quantities]
 
             product_form = ProductForm(initial = product_initial_data)
-            material_quantity_forms = [MaterialQuantityForm(initial = initial_data) for initial_data in mq_initial_data]
+            material_quantity_forms = [MaterialQuantityForm(track_material, choices, initial = initial_data) for initial_data in mq_initial_data]
 
         return render(
             request, "product/edit_product.html", 
@@ -194,7 +195,7 @@ def edit_product_page(request, username, product_id):
                 'username': username, 
                 'product_id': product_id, 
                 "product_form": product_form,
-                "material_quantity_forms": material_quantity_forms
+                "material_quantity_forms": material_quantity_forms,
             })
 
 def delete_product_page(request, username, product_id):

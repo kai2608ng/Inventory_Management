@@ -104,7 +104,7 @@ body{
     padding: 20px;
     border-radius: 10px;
     transition: .2s ease-in;
-    background-color: rgb(244, 242, 242);
+    background-color: rgb(254, 250, 250);
     width: 30vh;
     height: 30vh;
     margin: 20px;
@@ -179,17 +179,16 @@ body{
 }
 
 .store-utils-container > .form-submit-button{
-    background-color: rgb(107, 216, 180);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     font-size: 1.2em;
-    color: rgb(7, 55, 39);
     width: 100%;
     text-align: center;
 }
 
 .store-utils-container > .form-submit-button:hover{
-    background-color: rgb(19, 113, 82);
-    color: white;
+    background-color: rgb(107, 216, 180);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    color: rgb(7, 55, 39);
 }
 
 .restock-content-item-container{
@@ -245,4 +244,24 @@ body{
     font-weight: 900;
     font-size: 1.2em;
     margin: 0px 5px;
+}
+
+.form-sales-field-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin: 10px;
+    font-weight: 600;
+    width: 40vh;
+}
+
+.form-sales-main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: auto;
 }

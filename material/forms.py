@@ -50,16 +50,16 @@ class MaterialForm(forms.models.ModelForm):
         return cleaned_data
 
 class MaterialQuantityForm(forms.Form):
-    material = forms.ChoiceField(
+    def __init__(self, track_material, choices, *args, **kwargs):
+        super(MaterialQuantityForm, self).__init__(*args, **kwargs)
+        self.track_material = track_material
+        self.fields["material"] = forms.ChoiceField(
         required = True, 
         widget = forms.Select(
             attrs = {
                 "name": "material"
             }),
-        choices = [
-            (material.id, material.material_name) 
-            for material in Material.objects.all()
-        ]
+        choices = choices
     )
 
     quantity = forms.fields.IntegerField(
@@ -77,7 +77,7 @@ class MaterialQuantityForm(forms.Form):
 
     def clean_quantity(self):
         quantity = self.cleaned_data['quantity']
-        if quantity < 0:
+        if quantity <= 0:
             self.add_error("quantity", "Please enter a valid quantity")
 
         return quantity
@@ -86,5 +86,11 @@ class MaterialQuantityForm(forms.Form):
         material = self.cleaned_data["material"]
         if not material:
             self.add_error("material", "Please select a material")
+
+        if material in self.track_material:
+            self.add_error(None, "Material Duplicated")
+        else:
+            self.track_material.append(material)
+        
 
         return material

@@ -96,4 +96,13 @@ class MaterialQuantityTest(TestCase):
         MaterialQuantity.objects.create(product = product, material = material2, quantity = 5)
         print(MaterialQuantity.objects.filter(product__id = product.id))
 
+    def test_verify_whether_product_can_be_sold(self):
+        store = Store.objects.get(store_name = "store1")
+        product = Product.objects.create(product_name = "product1", store = store)
+        material1 = Material.objects.create(material_name = "material1", price = 1.5, store= store, max_capacity = 100, current_capacity = 50)
+        material2 = Material.objects.create(material_name = "material2", price = 1.5, store= store, max_capacity = 100, current_capacity = 50)
+        MaterialQuantity.objects.create(product = product, material = material1, quantity = 5)
+        MaterialQuantity.objects.create(product = product, material = material2, quantity = 5)
+        MaterialQuantity.objects.create(product = product, material = material2, quantity = 5)
+
 

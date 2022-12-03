@@ -140,8 +140,6 @@
     width: 100%;
 }
 
-
-
 .form-sub-field-container > input[type='number']{
     margin: 5px 0px;
     border-radius: 5px;
@@ -209,4 +207,9 @@
 .error-container > .error{
     font-size: .8em;
     color: red;
+}
+
+option{
+    font-weight: 600;
+    font-size: 1em;
 }

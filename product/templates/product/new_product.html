@@ -9,12 +9,10 @@
             <div class = "form-field-container">
                 {{product_form.product_name.label_tag}}
                 {{product_form.product_name}}
-                {% if product_form.non_field_errors %}
-                    <div class = "error">{{product_form.non_field_errors.as_text}}</div>
-                {% endif %}
-                {% if product_form.product_name.errors %}
+                <div class ="error-container">
                     <div class = "error">{{product_form.product_name.errors.as_text}}</div>
-                {% endif%}
+                    <div class = "error">{{product_form.non_field_errors.as_text}}</div>
+                </div>
                 <div class = "form-sub-main-container">
                     <div class = "form-material-main-container">
                         {% for material_quantity_form in material_quantity_forms %}
@@ -33,6 +31,7 @@
                             <div class = "error-container">
                                 <div class = "error">{{material_quantity_form.material.errors.as_text}}</div>
                                 <div class = "error">{{material_quantity_form.quantity.errors.as_text}}</div>
+                                <div class = "error">{{material_quantity_form.non_field_errors.as_text}}</div>
                             </div>
                         </div>
                         {% endfor %}

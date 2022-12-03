@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model, authenticate, login as auth_logi
 from django.db.models import F
 from .models import Store
 from .forms import StoreForm, SalesForm
+from product.models import Product
 from material.models import Material
 
 User = get_user_model()
@@ -64,6 +65,30 @@ def sales_page(request, username):
     valid_token_user = stupid_authentication(request)
 
     if valid_token_user:
-        pass
+        track_current_quantity = {}
+        choices = [(product.id, product.product_name) for product in Product.objects.all()]
+        sales_forms = [SalesForm(track_current_quantity, choices)]
 
-    return render(request, "store/sales.html", {"username": username})
+        if request.method == "POST":
+            products = request.POST.getlist("product")
+            quantities = request.POST.getlist("quantity")
+            sales_form_error_flag = False
+
+            sales_forms = []
+            for product_id, product_quantity in zip(products, quantities):
+                sales_form = SalesForm(track_current_quantity, choices, data = {"product": product_id, "quantity": product_quantity})
+                sales_forms.append(sales_form)
+
+                if not sales_form.is_valid():
+                    sales_form_error_flag = True
+                    continue
+
+            if not sales_form_error_flag and len(sales_forms):
+                for material_id in track_current_quantity.keys():
+                    material = Material.objects.get(pk = material_id)
+                    material.current_capacity = track_current_quantity[material_id]
+                    material.save()
+
+                return render(request, "store/sales_success.html", {"username": username})
+            
+    return render(request, "store/sales.html", {"username": username, "sales_forms": sales_forms, "choices": choices})

@@ -4,29 +4,48 @@
 <div class = "main-detail-container">
     <div class = "detail-container">
         <div class = 'detail-title'>Sales</div>
-        <form class = "detail-content-container" method = "POSST" action = "{% url 'sales_page' username %}">
+        <form class = "detail-content-container" method = "POST" action = "{% url 'sales_page' username %}">
         {% csrf_token %}
-            <div class = "sales-content-item-container">
-                <div class = "form-sub-container">
-                    <div class = "form-sub-main-field-container">
-                        <div class = "form-sub-field-container">
-                            {{sales_form.product.label_tag}}
-                            {{sales_form.product}}
+        {% if choices.count %}
+            <div class ="form-sales-field-container">
+                <div class = "form-sales-main-container">
+                    {% for sales_form in sales_forms %}
+                    <div class = "form-sub-container">
+                        <div class = "form-sub-main-field-container">
+                            <div class = "form-sub-field-container">
+                                {{sales_form.product.label_tag}}
+                                {{sales_form.product}}
+                            </div>
+                            <div class = "form-sub-field-container">
+                                {{sales_form.quantity.label_tag}}
+                                {{sales_form.quantity}}
+                            </div>
+                            <span class="material-symbols-outlined close">close</span>
                         </div>
-                        <div class = "form-sub-field-container">
-                            {{sales_form.quantity.label_tag}}
-                            {{sales_form.quantity}}
+                        <div class = "error-container">
+                            <div class = "error">{{sales_form.product.errors.as_text}}</div>
+                            <div class = "error">{{sales_form.quantity.errors.as_text}}</div>
+                            <div class = "error">{{sales_form.non_field_errors.as_text}}</div>
                         </div>
-                        <span class="material-symbols-outlined close">close</span>
                     </div>
-                    <div class = "error-container">
-                        <div class = "error">{{sales_form.product.errors.as_text}}</div>
-                        <div class = "error">{{sales_form.quantity.errors.as_text}}</div>
-                    </div>
+                    {% endfor %}
                 </div>
+                <div class = "add-material-container" id = "add-material">
+                    <span class = "material-symbols-outlined add-icon">add</span>
+                    <span class = "add-text">Add Product</span>
+                </div>
+                <button class = "form-submit-button">Sell Product</button>
             </div>
-            <button class = "form-submit-button">Sell Product</button>
+            {% else %}
+            <div class = "empty-container">
+                <span class = "empty-title">Unable to Sell</span>
+                <span class = "empty-description">It seems, No Product is created yet</span>
+                <span class = "empty-description">Let's add some Product to sale!</span>
+            </div>
+            {% endif %}
         </form>
+        {% load static %}
+        <script src = "{% static 'store/salesProduct.js' %}"></script>
     </div>
 </div>
 {% endblock %}
