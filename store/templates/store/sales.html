@@ -1,0 +1,32 @@
+{% extends 'store/base.html' %}
+
+{% block main %}
+<div class = "main-detail-container">
+    <div class = "detail-container">
+        <div class = 'detail-title'>Sales</div>
+        <form class = "detail-content-container" method = "POSST" action = "{% url 'sales_page' username %}">
+        {% csrf_token %}
+            <div class = "sales-content-item-container">
+                <div class = "form-sub-container">
+                    <div class = "form-sub-main-field-container">
+                        <div class = "form-sub-field-container">
+                            {{sales_form.product.label_tag}}
+                            {{sales_form.product}}
+                        </div>
+                        <div class = "form-sub-field-container">
+                            {{sales_form.quantity.label_tag}}
+                            {{sales_form.quantity}}
+                        </div>
+                        <span class="material-symbols-outlined close">close</span>
+                    </div>
+                    <div class = "error-container">
+                        <div class = "error">{{sales_form.product.errors.as_text}}</div>
+                        <div class = "error">{{sales_form.quantity.errors.as_text}}</div>
+                    </div>
+                </div>
+            </div>
+            <button class = "form-submit-button">Sell Product</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

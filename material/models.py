@@ -18,7 +18,7 @@ class Material(models.Model):
     current_capacity = models.PositiveBigIntegerField(null = False, default = 0)
 
     def __str__(self):
-       return self.material_name
+       return f"material_name: {self.material_name}, current_capacity: {self.current_capacity}"
 
 class MaterialQuantity(models.Model):
     class Meta:

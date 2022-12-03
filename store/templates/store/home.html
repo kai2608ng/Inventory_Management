@@ -3,11 +3,15 @@
 {% block main %}
     <div class = "store-container">
         <div class = "store-container-title">Your Store</div>
-        {% if store.count %}
+        {% if stores.count %}
             <div class = "store-content-container">
-                {% for store_object in store %}
+                {% for store in stores %}
                     <div class = "store-item-container">
-                        <div class = "store-item-title">{{store_object.store_name}}</div>
+                        <div class = "store-item-title">{{store.store_name}}</div>
+                        <div class = "store-utils-container">
+                            <a class = "form-submit-button" href = "{% url 'restock_page' username %}">Restock</a>
+                            <a class = "form-submit-button" href = "{% url 'sales_page' username %}">Sales</a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

@@ -15,6 +15,7 @@
                             <div class = "material-detail-text">Price: {{material.price}}</div>
                             <div class = "material-detail-text">Max Capacity: {{material.max_capacity}}</div>
                             <div class = "material-detail-text">Current Capacity: {{material.current_capacity}}</div>
+                            <div class = "material-detail-text">Percentage: {{material.percentage}}%</div>
                             <a class = "edit-button" href = "{% url 'edit_material_page' username=username material_id=material.id %}">Edit</a>
                         </div>
                     </div>

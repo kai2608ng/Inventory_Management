@@ -100,24 +100,21 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     padding: 20px;
     border-radius: 10px;
-    cursor: pointer;
     transition: .2s ease-in;
-    width: 20vh;
+    background-color: rgb(244, 242, 242);
+    width: 30vh;
+    height: 30vh;
     margin: 20px;
-}
-
-.store-item-container:hover{
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    background-color: rgb(236, 234, 234);
 }
 
 .store-item-title{
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 2em;
     margin: 10px 0px;
+    border-bottom: 2px solid black;
 }
 
 .empty-container{
@@ -136,12 +133,14 @@ body{
     font-weight: 600;
     font-size: 2.5em;
     margin: 10px;
+    text-align: center;
 }
 
 .empty-description{
     font-weight: 300;
     font-size: 2em;
     margin: 5px;
+    text-align: center;
 }
 
 .add-container{
@@ -171,3 +170,79 @@ body{
     transition: .1s ease-in;
 }
 
+.store-utils-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 10px;
+    width: 100%;
+}
+
+.store-utils-container > .form-submit-button{
+    background-color: rgb(107, 216, 180);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    font-size: 1.2em;
+    color: rgb(7, 55, 39);
+    width: 100%;
+    text-align: center;
+}
+
+.store-utils-container > .form-submit-button:hover{
+    background-color: rgb(19, 113, 82);
+    color: white;
+}
+
+.restock-content-item-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    font-weight: 300;
+    font-size: 1.2em;
+    width: 100%;
+    height: 10vh;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transition: .1s ease-in;
+    margin: 10px 0px;
+}
+
+.restock-content-detail-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px 20px;
+}
+
+.restock-content-item-container:hover{
+    background-color: lightgray;
+}
+
+.restock-detail-text{
+    margin: 0px 10px;
+}
+
+.restock{
+    color: green;
+    font-weight: 600;
+}
+
+.price-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 1px outset gray;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.price-title{
+    font-weight: 600;
+    font-size: 1.2em;
+    border-bottom: 1px solid black;
+}
+
+.price-text{
+    font-weight: 900;
+    font-size: 1.2em;
+    margin: 0px 5px;
+}

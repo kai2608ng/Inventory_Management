@@ -13,7 +13,10 @@ def material_page(request, username):
     valid_token_user = stupid_authentication(request)
 
     if valid_token_user:
-        materials = Store.objects.get(user = valid_token_user).material_entries.all()
+        materials = Store.objects.get(user = valid_token_user).material_entries.values()
+        for material in materials:
+            material.update({"percentage": round(material['current_capacity'] / material['max_capacity'] * 100, 2)})
+
         return render(request, "material/material.html", {'username': username, "materials": materials})
 
     return redirect(reverse("login_page"))
